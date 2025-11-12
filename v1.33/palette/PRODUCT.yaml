@@ -1,0 +1,93 @@
+# Kubernetes AI Conformance Checklist
+# Notes: This checklist is based on the Kubernetes AI Conformance document.
+# Participants should fill in the 'status', 'evidence', and 'notes' fields for each requirement.
+
+metadata:
+  kubernetesVersion: v1.33
+  platformName: "Spectro Cloud Palette"
+  platformVersion: "4.7.x"
+  vendorName: "Spectro Cloud"
+  websiteUrl: "https://www.spectrocloud.com/"
+  documentationUrl: "https://docs.spectrocloud.com/"
+  productLogoUrl: "https://www.spectrocloud.com/wp-content/uploads/2022/04/spectrocloud-logo.svg"
+  description: "Spectro Cloud Palette is a full-stack, declarative Kubernetes management platform for public cloud, private data centers and edge, with curated packs (CNIs, CSIs, operators) and policy-driven lifecycle automation."
+
+spec:
+  accelerators:
+    - id: dra_support
+      description: "Support Dynamic Resource Allocation (DRA) APIs to enable more flexible and fine-grained resource requests beyond simple counts."
+      level: SHOULD
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/kubernetes/"          # PXK 1.33 availability
+      notes: "PXK 1.33 clusters expose resource.k8s.io APIs; DRA can be enabled per cluster where required."
+  networking:
+    - id: ai_inference
+      description: "Support the Kubernetes Gateway API with an implementation for advanced traffic management for inference services, incl. weighted splits, header routing, and mesh integration."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/"                     # Packs list includes Istio, Kong, NGINX, Gloo (Gateway API impls)
+        - "https://docs.spectrocloud.com/registries-and-packs/adding-add-on-packs/"
+      notes: "Palette installs/operates Gateway API-capable controllers via packs (e.g., Istio, Kong, NGINX)."
+  schedulingOrchestration:
+    - id: gang_scheduling
+      description: "Platform must allow installation and successful operation of at least one gang scheduling solution (e.g., Kueue, Volcano)."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/registries-and-packs/"             # Custom/verified packs, Kubeflow/Kueue via packs
+        - "https://docs.spectrocloud.com/tutorials/packs-registries/deploy-pack/"
+      notes: "Validated via pack-based install of Kueue; Palette supports CRDs/webhooks and CRD lifecycle."
+    - id: cluster_autoscaling
+      description: "If autoscaler is provided, must scale node groups with specific accelerator types based on pending pods."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/aws-cluster-autoscaler/"
+        - "https://docs.spectrocloud.com/clusters/public-cloud/aws/configure-karpenter-eks-clusters/"
+      notes: "Validated with AWS Cluster Autoscaler and Karpenter packs; node pools labeled for GPU instance families."
+    - id: pod_autoscaling
+      description: "HPA must function for pods using accelerators, including custom metrics for AI/ML workloads."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
+        - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/deploy-monitor-stack/"
+      notes: "HPA with Prometheus custom metrics via Prometheus Operator + remote write; GPU metrics can be surfaced to HPA."
+  observability:
+    - id: accelerator_metrics
+      description: "Allow install/operation of at least one accelerator metrics solution with per-accelerator utilization and memory metrics; expose Prometheus/Otel endpoints."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/"                      # Packs list includes NVIDIA GPU Operator / plugin
+        - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
+        - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/"
+      notes: "Validated with NVIDIA GPU Operator (DCGM exporter) + Prometheus stack; metrics exposed at /metrics and scraped."
+    - id: ai_service_metrics
+      description: "Provide a monitoring system capable of discovering/scraping Prometheus-format metrics from AI jobs and inference servers."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
+        - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/deploy-monitor-stack/"
+      notes: "Prometheus Operator + ServiceMonitors scrape app endpoints; Grafana dashboards available via pack."
+  security:
+    - id: secure_accelerator_access
+      description: "Ensure accelerator access is isolated/mediated via device plugins or DRA and container runtime."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/"                      # NVIDIA GPU Operator / plugin packs
+        - "https://docs.spectrocloud.com/security/product-architecture/tenant-cluster/"
+      notes: "Isolation via vendor device plugins (e.g., NVIDIA) + Kubernetes allocation; validated with per-pod device allocation tests."
+  operator:
+    - id: robust_controller
+      description: "Prove at least one complex AI operator with CRD (e.g., Ray, Kubeflow) installs and functions (pods, webhooks, CRD reconciliation)."
+      level: MUST
+      status: "Implemented"
+      evidence:
+        - "https://docs.spectrocloud.com/integrations/"                      # Kubeflow packs available
+        - "https://docs.spectrocloud.com/registries-and-packs/#pack-structure"  # Kubeflow pack structure example
+      notes: "Kubeflow operator installed via pack; CRDs present, webhook admission active, and sample CRs reconcile."
