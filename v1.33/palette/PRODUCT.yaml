@@ -9,7 +9,7 @@ metadata:
   vendorName: "Spectro Cloud"
   websiteUrl: "https://www.spectrocloud.com/"
   documentationUrl: "https://docs.spectrocloud.com/"
-  productLogoUrl: "https://www.spectrocloud.com/wp-content/uploads/2022/04/spectrocloud-logo.svg"
+  productLogoUrl: "https://bit.ly/spectro-logo"
   description: "Spectro Cloud Palette is a full-stack, declarative Kubernetes management platform for public cloud, private data centers and edge, with curated packs (CNIs, CSIs, operators) and policy-driven lifecycle automation."
 
 spec:
@@ -27,9 +27,10 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/"                     # Packs list includes Istio, Kong, NGINX, Gloo (Gateway API impls)
-        - "https://docs.spectrocloud.com/registries-and-packs/adding-add-on-packs/"
-      notes: "Palette installs/operates Gateway API-capable controllers via packs (e.g., Istio, Kong, NGINX)."
+        - "https://docs.spectrocloud.com/integrations/"
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=kgateway"
+        - "https://docs.spectrocloud.com/integrations/kong/"
+      notes: "Palette installs/operates Gateway API-capable controllers out of the box (KGateway, Kong). Cilium supported as dataplane; service meshes (e.g., Istio) available via packs for optional integration."
   schedulingOrchestration:
     - id: gang_scheduling
       description: "Platform must allow installation and successful operation of at least one gang scheduling solution (e.g., Kueue, Volcano)."
@@ -44,9 +45,10 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/aws-cluster-autoscaler/"
+        - "https://docs.spectrocloud.com/clusters/cluster-management/node-pool/#worker-node-pool"
         - "https://docs.spectrocloud.com/clusters/public-cloud/aws/configure-karpenter-eks-clusters/"
-      notes: "Validated with AWS Cluster Autoscaler and Karpenter packs; node pools labeled for GPU instance families."
+        - "https://docs.spectrocloud.com/integrations/aws-cluster-autoscaler/"
+      notes: "Palette supports the Kubernetes Cluster Autoscaler out of the box, and AWS Autoscaler and Karpenter through dedicated packs."
     - id: pod_autoscaling
       description: "HPA must function for pods using accelerators, including custom metrics for AI/ML workloads."
       level: MUST
@@ -61,7 +63,8 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/"                      # Packs list includes NVIDIA GPU Operator / plugin
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=nvidia-gpu-operator-ai"
+        - "https://docs.spectrocloud.com/integrations/"
         - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
         - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/"
       notes: "Validated with NVIDIA GPU Operator (DCGM exporter) + Prometheus stack; metrics exposed at /metrics and scraped."
@@ -72,6 +75,7 @@ spec:
       evidence:
         - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
         - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/deploy-monitor-stack/"
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=nvidia-gpu-operator-ai"
       notes: "Prometheus Operator + ServiceMonitors scrape app endpoints; Grafana dashboards available via pack."
   security:
     - id: secure_accelerator_access
@@ -79,7 +83,8 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/"                      # NVIDIA GPU Operator / plugin packs
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=nvidia-gpu-operator-ai"
+        - "https://docs.spectrocloud.com/integrations/"
         - "https://docs.spectrocloud.com/security/product-architecture/tenant-cluster/"
       notes: "Isolation via vendor device plugins (e.g., NVIDIA) + Kubernetes allocation; validated with per-pod device allocation tests."
   operator:
@@ -88,6 +93,6 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/"                      # Kubeflow packs available
-        - "https://docs.spectrocloud.com/registries-and-packs/#pack-structure"  # Kubeflow pack structure example
+        - "https://docs.spectrocloud.com/integrations/"
+        - "https://docs.spectrocloud.com/registries-and-packs/#pack-structure"
       notes: "Kubeflow operator installed via pack; CRDs present, webhook admission active, and sample CRs reconcile."
