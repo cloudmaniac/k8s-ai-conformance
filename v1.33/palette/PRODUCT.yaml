@@ -19,7 +19,7 @@ spec:
       level: SHOULD
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/kubernetes/"          # PXK 1.33 availability
+        - "https://docs.spectrocloud.com/integrations/kubernetes/"
       notes: "PXK 1.33 clusters expose resource.k8s.io APIs; DRA can be enabled per cluster where required."
   networking:
     - id: ai_inference
@@ -37,7 +37,7 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/registries-and-packs/"             # Custom/verified packs, Kubeflow/Kueue via packs
+        - "https://docs.spectrocloud.com/registries-and-packs/"
         - "https://docs.spectrocloud.com/tutorials/packs-registries/deploy-pack/"
       notes: "Validated via pack-based install of Kueue; Palette supports CRDs/webhooks and CRD lifecycle."
     - id: cluster_autoscaling
@@ -56,7 +56,7 @@ spec:
       evidence:
         - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
         - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/deploy-monitor-stack/"
-      notes: "HPA with Prometheus custom metrics via Prometheus Operator + remote write; GPU metrics can be surfaced to HPA."
+      notes: "HPA validated with GPU workloads. GPU utilization and memory metrics are exposed via DCGM exporter, collected by Prometheus Operator, and surfaced to HPA."
   observability:
     - id: accelerator_metrics
       description: "Allow install/operation of at least one accelerator metrics solution with per-accelerator utilization and memory metrics; expose Prometheus/Otel endpoints."
@@ -67,7 +67,7 @@ spec:
         - "https://docs.spectrocloud.com/integrations/"
         - "https://docs.spectrocloud.com/integrations/prometheus-operator/"
         - "https://docs.spectrocloud.com/clusters/cluster-management/monitoring/"
-      notes: "Validated with NVIDIA GPU Operator (DCGM exporter) + Prometheus stack; metrics exposed at /metrics and scraped."
+      notes: "Validated with NVIDIA GPU Operator (DCGM exporter) + Prometheus stack. Metrics include GPU utilization, memory usage, temperature, and power draw, all exposed via Prometheus-compatible /metrics endpoints."
     - id: ai_service_metrics
       description: "Provide a monitoring system capable of discovering/scraping Prometheus-format metrics from AI jobs and inference servers."
       level: MUST
@@ -83,9 +83,8 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
+        - ai-cncf-conformance-secure-access.md
         - "https://docs.spectrocloud.com/integrations/packs/?pack=nvidia-gpu-operator-ai"
-        - "https://docs.spectrocloud.com/integrations/"
-        - "https://docs.spectrocloud.com/security/product-architecture/tenant-cluster/"
       notes: "Isolation via vendor device plugins (e.g., NVIDIA) + Kubernetes allocation; validated with per-pod device allocation tests."
   operator:
     - id: robust_controller
@@ -93,6 +92,6 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
-        - "https://docs.spectrocloud.com/integrations/"
-        - "https://docs.spectrocloud.com/registries-and-packs/#pack-structure"
-      notes: "Kubeflow operator installed via pack; CRDs present, webhook admission active, and sample CRs reconcile."
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=kuberay-operator"
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=kai-scheduler-ai"
+      notes: "Palette supports deployment of complex AI operators including KubeRay, Kubeflow, and Kai Scheduler via packs. Operators install their CRDs, run admission webhooks, and reconcile custom resources as expected on PXK 1.33 clusters."
