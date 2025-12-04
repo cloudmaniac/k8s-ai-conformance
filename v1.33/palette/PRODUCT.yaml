@@ -5,7 +5,7 @@
 metadata:
   kubernetesVersion: v1.33
   platformName: "Spectro Cloud Palette"
-  platformVersion: "4.7.x"
+  platformVersion: "4.8.x"
   vendorName: "Spectro Cloud"
   websiteUrl: "https://www.spectrocloud.com/"
   documentationUrl: "https://docs.spectrocloud.com/"
@@ -37,9 +37,9 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=kai-scheduler-ai"
         - "https://docs.spectrocloud.com/registries-and-packs/"
-        - "https://docs.spectrocloud.com/tutorials/packs-registries/deploy-pack/"
-      notes: "Validated via pack-based install of Kueue; Palette supports CRDs/webhooks and CRD lifecycle."
+      notes: "Validated via pack-based install of Kai; Palette supports CRDs/webhooks and CRD lifecycle."
     - id: cluster_autoscaling
       description: "If autoscaler is provided, must scale node groups with specific accelerator types based on pending pods."
       level: MUST
