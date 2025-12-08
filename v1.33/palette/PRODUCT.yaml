@@ -45,6 +45,7 @@ spec:
       level: MUST
       status: "Implemented"
       evidence:
+      - https://docs.spectrocloud.com/profiles/cluster-profiles/create-cluster-profiles/create-addon-profile/create-manifest-addon/
         - "https://docs.spectrocloud.com/clusters/cluster-management/node-pool/#worker-node-pool"
         - "https://docs.spectrocloud.com/clusters/public-cloud/aws/configure-karpenter-eks-clusters/"
         - "https://docs.spectrocloud.com/integrations/aws-cluster-autoscaler/"
