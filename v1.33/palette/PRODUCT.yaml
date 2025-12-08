@@ -94,5 +94,6 @@ spec:
       status: "Implemented"
       evidence:
         - "https://docs.spectrocloud.com/integrations/packs/?pack=kuberay-operator"
-        - "https://docs.spectrocloud.com/integrations/packs/?pack=kai-scheduler-ai"
-      notes: "Palette supports deployment of complex AI operators including KubeRay, Kubeflow, and Kai Scheduler via packs. Operators install their CRDs, run admission webhooks, and reconcile custom resources as expected on PXK 1.33 clusters."
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=kubeflow-training-operator"
+        - "https://docs.spectrocloud.com/integrations/packs/?pack=kubeflow-crds"
+      notes: "Palette supports deployment of complex AI operators including KubeRay and Kubeflow via packs. Operators install their CRDs, run admission webhooks, and reconcile custom resources as expected on PXK 1.33 clusters."
